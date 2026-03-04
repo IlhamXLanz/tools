@@ -1,0 +1,1703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NexTools - 20+ Digital Tools Premium</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* Tool Cards Premium */
+        .tools-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .tools-header h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tools-header p {
+            color: #b0b0b0;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        .category-filter {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 0.8rem 1.5rem;
+            background: var(--gray);
+            border: none;
+            border-radius: 50px;
+            color: var(--light);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 500;
+        }
+        
+        .filter-btn.active,
+        .filter-btn:hover {
+            background: var(--gradient);
+            transform: translateY(-2px);
+        }
+        
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            padding: 1rem;
+        }
+        
+        .tool-card {
+            background: var(--gray);
+            border-radius: 15px;
+            padding: 1.5rem;
+            transition: all 0.3s;
+            border: 1px solid var(--light-gray);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .tool-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: var(--shadow);
+        }
+        
+        .tool-card.popular::before {
+            content: '🔥 POPULER';
+            position: absolute;
+            top: 10px;
+            right: -30px;
+            background: var(--gradient);
+            color: white;
+            padding: 0.3rem 2rem;
+            transform: rotate(45deg);
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        .tool-icon {
+            width: 50px;
+            height: 50px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tool-icon.tiktok { background: rgba(0, 0, 0, 0.8); color: #fff; }
+        .tool-icon.youtube { background: #ff0000; color: white; }
+        .tool-icon.instagram { background: radial-gradient(circle at 30% 30%, #fdf497, #fd5949, #d6249f, #285AEB); color: white; }
+        .tool-icon.facebook { background: #1877f2; color: white; }
+        .tool-icon.twitter { background: #1da1f2; color: white; }
+        .tool-icon.whatsapp { background: #25d366; color: white; }
+        .tool-icon.telegram { background: #0088cc; color: white; }
+        .tool-icon.pinterest { background: #bd081c; color: white; }
+        .tool-icon.soundcloud { background: #ff7700; color: white; }
+        .tool-icon.spotify { background: #1db954; color: white; }
+        .tool-icon.pdf { background: #f40f02; color: white; }
+        .tool-icon.image { background: #00b894; color: white; }
+        .tool-icon.video { background: #0984e3; color: white; }
+        .tool-icon.audio { background: #6c5ce7; color: white; }
+        .tool-icon.converter { background: #e17055; color: white; }
+        .tool-icon.security { background: #d63031; color: white; }
+        .tool-icon.utility { background: #fdcb6e; color: white; }
+        
+        .tool-card h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .tool-card p {
+            color: #b0b0b0;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .tool-features {
+            display: flex;
+            gap: 0.8rem;
+            margin-bottom: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .tool-features span {
+            font-size: 0.8rem;
+            color: #b0b0b0;
+        }
+        
+        .tool-features i {
+            color: var(--primary);
+            margin-right: 0.2rem;
+            font-size: 0.7rem;
+        }
+        
+        .tool-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: transparent;
+            border: 1px solid var(--primary);
+            border-radius: 8px;
+            color: var(--primary);
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+        }
+        
+        .tool-btn:hover {
+            background: var(--gradient);
+            color: white;
+            border-color: transparent;
+        }
+        
+        /* Modal Styles */
+        .tool-modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+        
+        .tool-modal-content {
+            background: var(--gray);
+            margin: 3% auto;
+            padding: 2rem;
+            border-radius: 20px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 85vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideUp 0.3s;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(50px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+        
+        .close-tool {
+            position: absolute;
+            right: 1rem;
+            top: 1rem;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #b0b0b0;
+            transition: color 0.3s;
+            z-index: 1;
+        }
+        
+        .close-tool:hover {
+            color: var(--primary);
+        }
+        
+        .tool-modal-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        
+        .tool-modal-header i {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .input-container {
+            margin-bottom: 1rem;
+        }
+        
+        .input-container input,
+        .input-container select,
+        .input-container textarea {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--darker);
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            color: var(--light);
+            font-size: 0.9rem;
+            margin-bottom: 0.8rem;
+        }
+        
+        .input-container input:focus,
+        .input-container select:focus,
+        .input-container textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+        
+        .process-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background: var(--gradient);
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .process-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow);
+        }
+        
+        .result-container {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: var(--darker);
+            border-radius: 8px;
+            min-height: 50px;
+        }
+        
+        .example-btn {
+            padding: 0.5rem;
+            background: var(--darker);
+            border: 1px solid var(--primary);
+            border-radius: 5px;
+            color: var(--light);
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+        
+        .example-btn:hover {
+            background: var(--primary);
+        }
+        
+        .format-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .format-option {
+            background: var(--darker);
+            border: 1px solid var(--light-gray);
+            border-radius: 8px;
+            padding: 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .format-option:hover,
+        .format-option.active {
+            border-color: var(--primary);
+            background: rgba(108, 92, 231, 0.1);
+        }
+        
+        .format-option i {
+            display: block;
+            font-size: 1.2rem;
+            margin-bottom: 0.2rem;
+            color: var(--primary);
+        }
+        
+        .format-option span {
+            font-size: 0.7rem;
+        }
+        
+        .quick-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .quick-action-btn {
+            flex: 1;
+            padding: 0.5rem;
+            background: var(--darker);
+            border: 1px solid var(--light-gray);
+            border-radius: 5px;
+            color: var(--light);
+            cursor: pointer;
+            font-size: 0.8rem;
+            transition: all 0.3s;
+        }
+        
+        .quick-action-btn:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .progress-bar {
+            width: 100%;
+            height: 4px;
+            background: var(--darker);
+            border-radius: 2px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--gradient);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        @media (max-width: 768px) {
+            .tools-header h1 {
+                font-size: 2rem;
+            }
+            
+            .tool-modal-content {
+                margin: 5% auto;
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <i class="fas fa-cube"></i>
+                <span>NexTools</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#tools">Tools</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#" id="loginBtn"><i class="fas fa-user"></i> Login</a></li>
+            </ul>
+            <div class="hamburger">
+                <span class="bar"></span>
+                <span class="bar"></span>
+                <span class="bar"></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Login Modal -->
+    <div id="loginModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-header">
+                <i class="fas fa-lock"></i>
+                <h2>Admin Login</h2>
+            </div>
+            <form id="loginForm">
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="username" placeholder="Username" value="admin" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-key"></i>
+                    <input type="password" id="password" placeholder="Password" value="admin" required>
+                </div>
+                <button type="submit" class="login-btn">Login <i class="fas fa-arrow-right"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="glow-text">20+ Digital Tools <span class="gradient-text">Premium</span></h1>
+                <p>Download, convert, and transform your digital content with our powerful suite of tools</p>
+                <div class="hero-stats">
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="50">0</span><span>K+</span>
+                        <span class="stat-label">Happy Users</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="100">0</span><span>K+</span>
+                        <span class="stat-label">Downloads</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-number" data-target="20">0</span><span>+</span>
+                        <span class="stat-label">Premium Tools</span>
+                    </div>
+                </div>
+                <a href="#tools" class="cta-button">Explore All Tools <i class="fas fa-arrow-down"></i></a>
+            </div>
+            <div class="hero-image">
+                <div class="floating-card"><i class="fab fa-tiktok"></i></div>
+                <div class="floating-card"><i class="fab fa-youtube"></i></div>
+                <div class="floating-card"><i class="fab fa-instagram"></i></div>
+                <div class="floating-card"><i class="fas fa-file-pdf"></i></div>
+                <div class="floating-card"><i class="fas fa-music"></i></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tools Section -->
+    <section id="tools" class="tools">
+        <div class="container">
+            <div class="tools-header">
+                <h1>Premium <span class="gradient-text">Tools Collection</span></h1>
+                <p>20+ powerful tools to enhance your digital experience. All tools are free and easy to use.</p>
+            </div>
+
+            <!-- Category Filter -->
+            <div class="category-filter">
+                <button class="filter-btn active" data-filter="all">All Tools</button>
+                <button class="filter-btn" data-filter="social">Social Media</button>
+                <button class="filter-btn" data-filter="video">Video Tools</button>
+                <button class="filter-btn" data-filter="audio">Audio Tools</button>
+                <button class="filter-btn" data-filter="image">Image Tools</button>
+                <button class="filter-btn" data-filter="document">Document</button>
+                <button class="filter-btn" data-filter="utility">Utilities</button>
+            </div>
+
+            <!-- Tools Grid - 20+ Tools -->
+            <div class="tools-grid" id="toolsGrid">
+                <!-- 1. TikTok Downloader -->
+                <div class="tool-card popular" data-category="social">
+                    <div class="tool-icon tiktok"><i class="fab fa-tiktok"></i></div>
+                    <h3>TikTok Downloader</h3>
+                    <p>Download video TikTok tanpa watermark</p>
+                    <div class="tool-features">
+                        <span><i class="fas fa-check"></i> No Watermark</span>
+                        <span><i class="fas fa-check"></i> HD Quality</span>
+                    </div>
+                    <button class="tool-btn" onclick="openToolModal('tiktok')">Gunakan <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- 2. YouTube Downloader -->
+                <div class="tool-card popular" data-category="video">
+                    <div class="tool-icon youtube"><i class="fab fa-youtube"></i></div>
+                    <h3>YouTube Downloader</h3>
+                    <p>Download video YouTube MP4/MP3</p>
+                    <div class="tool-features">
+                        <span><i class="fas fa-check"></i> 4K/1080p</span>
+                        <span><i class="fas fa-check"></i> MP3 Audio</span>
+                    </div>
+                    <button class="tool-btn" onclick="openToolModal('youtube')">Gunakan <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- 3. Instagram Downloader -->
+                <div class="tool-card" data-category="social">
+                    <div class="tool-icon instagram"><i class="fab fa-instagram"></i></div>
+                    <h3>Instagram Downloader</h3>
+                    <p>Download post, reels, stories IG</p>
+                    <div class="tool-features">
+                        <span><i class="fas fa-check"></i> Posts</span>
+                        <span><i class="fas fa-check"></i> Reels</span>
+                        <span><i class="fas fa-check"></i> Stories</span>
+                    </div>
+                    <button class="tool-btn" onclick="openToolModal('instagram')">Gunakan <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- 4. Facebook Downloader -->
+                <div class="tool-card" data-category="social">
+                    <div class="tool-icon facebook"><i class="fab fa-facebook"></i></div>
+                    <h3>Facebook Downloader</h3>
+                    <p>Download video Facebook HD</p>
+                    <div class="tool-features">
+                        <span><i class="fas fa-check"></i> HD Video</span>
+                        <span><i class="fas fa-check"></i> No Login</span>
+                    </div>
+                    <button class="tool-btn" onclick="openToolModal('facebook')">Gunakan <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- 5. Twitter Downloader -->
+                <div class="tool-card" data-category="social">
+                    <div class="tool-icon twitter"><i class="fab fa-twitter"></i></div>
+                    <h3>Twitter Downloader</h3>
+                    <p>Download video & GIF Twitter</p>
+                    <div class="tool-features">
+                        <span><i class="fas fa-check"></i> Videos</span>
+                        <span><i class="fas fa-check"></i> GIFs</span>
+                    </div>
+                    <button class="tool-btn" onclick="openToolModal('twitter')">Gunakan <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- 6. WhatsApp Status Downloader -->
+                <div class="tool-card" data-category="social">
+                    <div class="tool-icon whatsapp"><i class="fab fa-whatsapp"></i></div>
+                    <h3>WA Status Downloader</h3>
+                    <p>Download status WhatsApp</p>
+                    <div class="tool-features">
+                        <span><i class="fas fa-check"></i> Images</span>
+                        <span><i class="fas fa-check"></i> Videos</span>
+                    </div>
+                    <button class="tool-btn" onclick="openToolModal('whatsapp')">Gunakan <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- 7. Telegram Downloader -->
+                <div class="tool-card" data-category="social">
+                    <div class="tool-icon telegram"><i class="fab fa-telegram"></i></div>
+                    <h3>Telegram Downloader</h3>
+                    <p>Download media dari Telegram</p>
+                    <div class="tool-features">
+                        <span><i class="fas fa-check"></i> Videos</span>
+                        <span><i class="fas fa-check"></i> Documents</span>
+                    </div>
+                    <button class="tool-btn" onclick="openToolModal('telegram')">Gunakan <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- 8. Pinterest Downloader -->
+                <div class="tool-card" data-category="social">
+                    <div class="tool-icon pinterest"><i class="fab fa-pinterest"></i></div>
+                    <h3>Pinterest Downloader</h3>
+                    <p>Download gambar & video Pinterest</p>
+                    <div class="tool-features">
+                        <span><i class="fas fa-check"></i> Images</span>
+                        <span><i class="fas fa-check"></i> Videos</span>
+                    </div>
+                    <button class="tool-btn" onclick="openToolModal('pinterest')">Gunakan <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- 9. SoundCloud Downloader -->
+                <div class="tool-card" data-category="audio">
+                    <div class="tool-icon soundcloud"><i class="fab fa-soundcloud"></i></div>
+                    <h3>SoundCloud Downloader</h3>
+                    <p>Download musik dari SoundCloud</p>
+                    <div class="tool-features">
+                        <span><i class="fas fa-check"></i> MP3 320kbps</span>
+                        <span><i class="fas fa-check"></i> High Quality</span>
+                    </div>
+                    <button class="tool-btn" onclick="openToolModal('soundcloud')">Gunakan <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- 10. Spotify Downloader -->
+                <div class="tool-card" data-category="audio">
+                    <div class="tool-icon spotify"><i class="fab fa-spotify"></i></div>
+                    <h3>Spotify Downloader</h3>
+                    <p>Download lagu dari Spotify</p>
+                    <div class="tool-features">
+                        <span><i class="fas fa-check"></i> MP3</span>
+                        <span><i class="fas fa-check"></i> M4A</span>
+                    </div>
+                    <button class="tool-btn" onclick="openToolModal('spotify')">Gunakan <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- 11. PDF to Word -->
+                <div class="tool-card" data-category="document">
+                    <div class="tool-icon pdf"><i class="fas fa-file-pdf"></i></div>
+                    <h3>PDF to Word</h3>
+                    <p>Convert PDF ke Word editable</p>
+                    <div class="tool-features">
+                        <span><i class="fas fa-check"></i> 100% Akurat</span>
+                        <span><i class="fas fa-check"></i> Free</span>
+                    </div>
+                    <button class="tool-btn" onclick="openToolModal('pdf2word')">Gunakan <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- 12. Word to PDF -->
+                <div class="tool-card" data-category="document">
+                    <div class="tool-icon pdf"><i class="fas fa-file-word"></i></div>
+                    <h3>Word to PDF</h3>
+                    <p>Convert Word ke PDF</p>
+                    <div class="tool-features">
+                        <span><i class="fas fa-check"></i> High Quality</span>
+                        <span><i class="fas fa-check"></i> Fast</span>
+                    </div>
+                    <button class="tool-btn" onclick="openToolModal('word2pdf')">Gunakan <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- 13. PDF Compressor -->
+                <div class="tool-card" data-category="document">
+                    <div class="tool-icon pdf"><i class="fas fa-compress"></i></div>
+                    <h3>PDF Compressor</h3>
+                    <p>Kompres PDF hingga 90%</p>
+                    <div class="tool-features">
+                        <span><i class="fas fa-check"></i> Small Size</span>
+                        <span><i class="fas fa-check"></i> Quality OK</span>
+                    </div>
+                    <button class="tool-btn" onclick="openToolModal('pdfcompress')">Gunakan <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- 14. Image to PNG -->
+                <div class="tool-card" data-category="image">
+                    <div class="tool-icon image"><i class="fas fa-file-image"></i></div>
+                    <h3>Image to PNG</h3>
+                    <p>Convert JPG/WebP ke PNG</p>
+                    <div class="tool-features">
+                        <span><i class="fas fa-check"></i> Transparan</span>
+                        <span><i class="fas fa-check"></i> HD</span>
+                    </div>
+                    <button class="tool-btn" onclick="openToolModal('image2png')">Gunakan <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- 15. Image Compressor -->
+                <div class="tool-card" data-category="image">
+                    <div class="tool-icon image"><i class="fas fa-compress-alt"></i></div>
+                    <h3>Image Compressor</h3>
+                    <p>Kompres gambar hingga 80%</p>
+                    <div class="tool-features">
+                        <span><i class="fas fa-check"></i> JPG/PNG</span>
+                        <span><i class="fas fa-check"></i> WebP</span>
+                    </div>
+                    <button class="tool-btn" onclick="openToolModal('imagecompress')">Gunakan <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- 16. Video Compressor -->
+                <div class="tool-card" data-category="video">
+                    <div class="tool-icon video"><i class="fas fa-compress"></i></div>
+                    <h3>Video Compressor</h3>
+                    <p>Kompres video untuk sharing</p>
+                    <div class="tool-features">
+                        <span><i class="fas fa-check"></i> MP4</span>
+                        <span><i class="fas fa-check"></i> MOV</span>
+                    </div>
+                    <button class="tool-btn" onclick="openToolModal('videocompress')">Gunakan <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- 17. Video to MP3 -->
+                <div class="tool-card" data-category="audio">
+                    <div class="tool-icon audio"><i class="fas fa-music"></i></div>
+                    <h3>Video to MP3</h3>
+                    <p>Extract audio dari video</p>
+                    <div class="tool-features">
+                        <span><i class="fas fa-check"></i> MP3</span>
+                        <span><i class="fas fa-check"></i> M4A</span>
+                    </div>
+                    <button class="tool-btn" onclick="openToolModal('video2mp3')">Gunakan <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- 18. QR Generator -->
+                <div class="tool-card" data-category="utility">
+                    <div class="tool-icon utility"><i class="fas fa-qrcode"></i></div>
+                    <h3>QR Generator</h3>
+                    <p>Buat QR code custom</p>
+                    <div class="tool-features">
+                        <span><i class="fas fa-check"></i> Custom Warna</span>
+                        <span><i class="fas fa-check"></i> Logo</span>
+                    </div>
+                    <button class="tool-btn" onclick="openToolModal('qr')">Gunakan <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- 19. Password Generator -->
+                <div class="tool-card" data-category="utility">
+                    <div class="tool-icon security"><i class="fas fa-key"></i></div>
+                    <h3>Password Generator</h3>
+                    <p>Generate password kuat</p>
+                    <div class="tool-features">
+                        <span><i class="fas fa-check"></i> Strong</span>
+                        <span><i class="fas fa-check"></i> Custom</span>
+                    </div>
+                    <button class="tool-btn" onclick="openToolModal('password')">Gunakan <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- 20. Unit Converter -->
+                <div class="tool-card" data-category="utility">
+                    <div class="tool-icon converter"><i class="fas fa-exchange-alt"></i></div>
+                    <h3>Unit Converter</h3>
+                    <p>Convert satuan panjang, berat, suhu</p>
+                    <div class="tool-features">
+                        <span><i class="fas fa-check"></i> Length</span>
+                        <span><i class="fas fa-check"></i> Weight</span>
+                    </div>
+                    <button class="tool-btn" onclick="openToolModal('converter')">Gunakan <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- 21. Text to Speech -->
+                <div class="tool-card" data-category="utility">
+                    <div class="tool-icon audio"><i class="fas fa-volume-up"></i></div>
+                    <h3>Text to Speech</h3>
+                    <p>Ubah teks jadi suara</p>
+                    <div class="tool-features">
+                        <span><i class="fas fa-check"></i> 20+ Bahasa</span>
+                        <span><i class="fas fa-check"></i> Natural</span>
+                    </div>
+                    <button class="tool-btn" onclick="openToolModal('tts')">Gunakan <i class="fas fa-arrow-right"></i></button>
+                </div>
+
+                <!-- 22. Image to Text -->
+                <div class="tool-card" data-category="image">
+                    <div class="tool-icon image"><i class="fas fa-font"></i></div>
+                    <h3>Image to Text (OCR)</h3>
+                    <p>Extract teks dari gambar</p>
+                    <div class="tool-features">
+                        <span><i class="fas fa-check"></i> Akurat</span>
+                        <span><i class="fas fa-check"></i> 100+ Bahasa</span>
+                    </div>
+                    <button class="tool-btn" onclick="openToolModal('ocr')">Gunakan <i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ========== ALL TOOL MODALS ========== -->
+
+    <!-- TikTok Modal -->
+    <div id="modal-tiktok" class="tool-modal">
+        <div class="tool-modal-content">
+            <span class="close-tool">&times;</span>
+            <div class="tool-modal-header">
+                <i class="fab fa-tiktok" style="color: #000;"></i>
+                <h2>TikTok Downloader</h2>
+                <p style="color: #b0b0b0; font-size: 0.9rem;">Download video TikTok tanpa watermark</p>
+            </div>
+            <div class="input-container">
+                <input type="url" id="tiktokUrl" placeholder="https://www.tiktok.com/@user/video/123456789">
+                <div class="quick-actions">
+                    <button class="quick-action-btn" onclick="setExampleUrl('tiktok', 'https://www.tiktok.com/@tiktok/video/7123456789012345678')">Contoh 1</button>
+                    <button class="quick-action-btn" onclick="setExampleUrl('tiktok', 'https://www.tiktok.com/@user/video/8234567890123456789')">Contoh 2</button>
+                </div>
+                <button class="process-btn" onclick="processTool('tiktok')">
+                    <i class="fas fa-search"></i> Proses Video
+                </button>
+            </div>
+            <div id="result-tiktok" class="result-container"></div>
+            <div class="progress-bar" id="progress-tiktok" style="display: none;">
+                <div class="progress-fill" style="width: 0%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- YouTube Modal -->
+    <div id="modal-youtube" class="tool-modal">
+        <div class="tool-modal-content">
+            <span class="close-tool">&times;</span>
+            <div class="tool-modal-header">
+                <i class="fab fa-youtube" style="color: #ff0000;"></i>
+                <h2>YouTube Downloader</h2>
+                <p style="color: #b0b0b0; font-size: 0.9rem;">Download video YouTube MP4/MP3</p>
+            </div>
+            <div class="input-container">
+                <input type="url" id="youtubeUrl" placeholder="https://www.youtube.com/watch?v=...">
+                
+                <div class="format-options">
+                    <div class="format-option active" onclick="selectFormat(this, 'mp4')">
+                        <i class="fas fa-video"></i>
+                        <span>MP4 Video</span>
+                    </div>
+                    <div class="format-option" onclick="selectFormat(this, 'mp3')">
+                        <i class="fas fa-music"></i>
+                        <span>MP3 Audio</span>
+                    </div>
+                </div>
+                
+                <select id="youtubeQuality" style="width: 100%; padding: 0.8rem; background: var(--darker); border: 1px solid var(--light-gray); border-radius: 8px; color: var(--light);">
+                    <option value="1080p">1080p Full HD</option>
+                    <option value="720p">720p HD</option>
+                    <option value="480p">480p</option>
+                    <option value="360p">360p</option>
+                </select>
+                
+                <button class="process-btn" onclick="processTool('youtube')">
+                    <i class="fas fa-download"></i> Download
+                </button>
+            </div>
+            <div id="result-youtube" class="result-container"></div>
+            <div class="progress-bar" id="progress-youtube" style="display: none;">
+                <div class="progress-fill" style="width: 0%;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Instagram Modal -->
+    <div id="modal-instagram" class="tool-modal">
+        <div class="tool-modal-content">
+            <span class="close-tool">&times;</span>
+            <div class="tool-modal-header">
+                <i class="fab fa-instagram" style="color: #e4405f;"></i>
+                <h2>Instagram Downloader</h2>
+                <p style="color: #b0b0b0; font-size: 0.9rem;">Download post, reels, stories IG</p>
+            </div>
+            <div class="input-container">
+                <input type="url" id="instagramUrl" placeholder="https://www.instagram.com/p/...">
+                
+                <select id="instagramType" style="width: 100%; padding: 0.8rem; background: var(--darker); border: 1px solid var(--light-gray); border-radius: 8px; color: var(--light); margin-bottom: 0.8rem;">
+                    <option value="post">Post/Feed</option>
+                    <option value="reels">Reels</option>
+                    <option value="stories">Stories</option>
+                </select>
+                
+                <button class="process-btn" onclick="processTool('instagram')">
+                    <i class="fas fa-download"></i> Download
+                </button>
+            </div>
+            <div id="result-instagram" class="result-container"></div>
+        </div>
+    </div>
+
+    <!-- PDF Tools Modal -->
+    <div id="modal-pdf" class="tool-modal">
+        <div class="tool-modal-content">
+            <span class="close-tool">&times;</span>
+            <div class="tool-modal-header">
+                <i class="fas fa-file-pdf" style="color: #f40f02;"></i>
+                <h2>PDF Tools</h2>
+                <p style="color: #b0b0b0; font-size: 0.9rem;">Convert, compress, merge PDF</p>
+            </div>
+            <div class="input-container">
+                <select id="pdfTool" style="width: 100%; padding: 0.8rem; background: var(--darker); border: 1px solid var(--light-gray); border-radius: 8px; color: var(--light); margin-bottom: 0.8rem;">
+                    <option value="word">PDF ke Word</option>
+                    <option value="compress">Compress PDF</option>
+                    <option value="merge">Merge PDF</option>
+                    <option value="split">Split PDF</option>
+                </select>
+                
+                <input type="file" id="pdfFile" accept=".pdf" style="width: 100%; padding: 0.8rem; background: var(--darker); border: 1px solid var(--light-gray); border-radius: 8px; color: var(--light); margin-bottom: 0.8rem;">
+                
+                <button class="process-btn" onclick="processTool('pdf')">
+                    <i class="fas fa-cog"></i> Proses
+                </button>
+            </div>
+            <div id="result-pdf" class="result-container"></div>
+        </div>
+    </div>
+
+    <!-- Image Tools Modal -->
+    <div id="modal-image" class="tool-modal">
+        <div class="tool-modal-content">
+            <span class="close-tool">&times;</span>
+            <div class="tool-modal-header">
+                <i class="fas fa-image" style="color: #00b894;"></i>
+                <h2>Image Converter</h2>
+                <p style="color: #b0b0b0; font-size: 0.9rem;">Convert JPG ke PNG, compress, resize</p>
+            </div>
+            <div class="input-container">
+                <select id="imageTool" style="width: 100%; padding: 0.8rem; background: var(--darker); border: 1px solid var(--light-gray); border-radius: 8px; color: var(--light); margin-bottom: 0.8rem;">
+                    <option value="jpg2png">JPG to PNG</option>
+                    <option value="png2jpg">PNG to JPG</option>
+                    <option value="compress">Compress Image</option>
+                    <option value="resize">Resize Image</option>
+                </select>
+                
+                <input type="file" id="imageFile" accept="image/*" style="width: 100%; padding: 0.8rem; background: var(--darker); border: 1px solid var(--light-gray); border-radius: 8px; color: var(--light); margin-bottom: 0.8rem;">
+                
+                <button class="process-btn" onclick="processTool('image')">
+                    <i class="fas fa-sync-alt"></i> Convert
+                </button>
+            </div>
+            <div id="result-image" class="result-container"></div>
+        </div>
+    </div>
+
+    <!-- QR Generator Modal -->
+    <div id="modal-qr" class="tool-modal">
+        <div class="tool-modal-content">
+            <span class="close-tool">&times;</span>
+            <div class="tool-modal-header">
+                <i class="fas fa-qrcode" style="color: #fdcb6e;"></i>
+                <h2>QR Code Generator</h2>
+                <p style="color: #b0b0b0; font-size: 0.9rem;">Generate QR code untuk URL/text</p>
+            </div>
+            <div class="input-container">
+                <textarea id="qrText" rows="3" placeholder="Masukkan teks atau URL..." style="width: 100%; padding: 0.8rem; background: var(--darker); border: 1px solid var(--light-gray); border-radius: 8px; color: var(--light); margin-bottom: 0.8rem;"></textarea>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.8rem;">
+                    <input type="color" id="qrColor1" value="#6c5ce7" style="height: 40px; background: var(--darker); border: 1px solid var(--light-gray); border-radius: 8px;">
+                    <input type="color" id="qrColor2" value="#ffffff" style="height: 40px; background: var(--darker); border: 1px solid var(--light-gray); border-radius: 8px;">
+                </div>
+                
+                <button class="process-btn" onclick="processTool('qr')">
+                    <i class="fas fa-qrcode"></i> Generate QR
+                </button>
+            </div>
+            <div id="result-qr" class="result-container" style="text-align: center;"></div>
+        </div>
+    </div>
+
+    <!-- Password Generator Modal -->
+    <div id="modal-password" class="tool-modal">
+        <div class="tool-modal-content">
+            <span class="close-tool">&times;</span>
+            <div class="tool-modal-header">
+                <i class="fas fa-key" style="color: #d63031;"></i>
+                <h2>Password Generator</h2>
+                <p style="color: #b0b0b0; font-size: 0.9rem;">Generate password kuat & aman</p>
+            </div>
+            <div class="input-container">
+                <div style="margin-bottom: 0.8rem;">
+                    <label>Panjang Password: <span id="passwordLength">12</span></label>
+                    <input type="range" id="passwordRange" min="6" max="32" value="12" oninput="updatePasswordLength(this.value)" style="width: 100%;">
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.8rem;">
+                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="includeUppercase" checked> Huruf Besar
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="includeLowercase" checked> Huruf Kecil
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="includeNumbers" checked> Angka
+                    </label>
+                    <label style="display: flex; align-items: center; gap: 0.5rem;">
+                        <input type="checkbox" id="includeSymbols" checked> Simbol
+                    </label>
+                </div>
+                
+                <button class="process-btn" onclick="processTool('password')">
+                    <i class="fas fa-key"></i> Generate Password
+                </button>
+            </div>
+            <div id="result-password" class="result-container"></div>
+        </div>
+    </div>
+
+    <!-- Unit Converter Modal -->
+    <div id="modal-converter" class="tool-modal">
+        <div class="tool-modal-content">
+            <span class="close-tool">&times;</span>
+            <div class="tool-modal-header">
+                <i class="fas fa-exchange-alt" style="color: #e17055;"></i>
+                <h2>Unit Converter</h2>
+                <p style="color: #b0b0b0; font-size: 0.9rem;">Convert berbagai satuan</p>
+            </div>
+            <div class="input-container">
+                <select id="converterType" style="width: 100%; padding: 0.8rem; background: var(--darker); border: 1px solid var(--light-gray); border-radius: 8px; color: var(--light); margin-bottom: 0.8rem;">
+                    <option value="length">Panjang (meter, cm, km)</option>
+                    <option value="weight">Berat (kg, gram, lb)</option>
+                    <option value="temperature">Suhu (C, F, K)</option>
+                    <option value="currency">Mata Uang (IDR, USD)</option>
+                </select>
+                
+                <input type="number" id="converterValue" placeholder="Nilai" style="width: 100%; padding: 0.8rem; background: var(--darker); border: 1px solid var(--light-gray); border-radius: 8px; color: var(--light); margin-bottom: 0.8rem;">
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 0.8rem;">
+                    <select id="converterFrom" style="padding: 0.8rem; background: var(--darker); border: 1px solid var(--light-gray); border-radius: 8px; color: var(--light);"></select>
+                    <select id="converterTo" style="padding: 0.8rem; background: var(--darker); border: 1px solid var(--light-gray); border-radius: 8px; color: var(--light);"></select>
+                </div>
+                
+                <button class="process-btn" onclick="processTool('converter')">
+                    <i class="fas fa-calculator"></i> Convert
+                </button>
+            </div>
+            <div id="result-converter" class="result-container"></div>
+        </div>
+    </div>
+
+    <!-- Text to Speech Modal -->
+    <div id="modal-tts" class="tool-modal">
+        <div class="tool-modal-content">
+            <span class="close-tool">&times;</span>
+            <div class="tool-modal-header">
+                <i class="fas fa-volume-up" style="color: #6c5ce7;"></i>
+                <h2>Text to Speech</h2>
+                <p style="color: #b0b0b0; font-size: 0.9rem;">Ubah teks menjadi suara</p>
+            </div>
+            <div class="input-container">
+                <textarea id="ttsText" rows="4" placeholder="Masukkan teks..." style="width: 100%; padding: 0.8rem; background: var(--darker); border: 1px solid var(--light-gray); border-radius: 8px; color: var(--light); margin-bottom: 0.8rem;"></textarea>
+                
+                <select id="ttsLanguage" style="width: 100%; padding: 0.8rem; background: var(--darker); border: 1px solid var(--light-gray); border-radius: 8px; color: var(--light); margin-bottom: 0.8rem;">
+                    <option value="id">Indonesian</option>
+                    <option value="en">English (US)</option>
+                    <option value="en-gb">English (UK)</option>
+                    <option value="ja">Japanese</option>
+                    <option value="ko">Korean</option>
+                    <option value="zh">Chinese</option>
+                </select>
+                
+                <button class="process-btn" onclick="processTool('tts')">
+                    <i class="fas fa-play"></i> Play & Download
+                </button>
+            </div>
+            <div id="result-tts" class="result-container"></div>
+        </div>
+    </div>
+
+    <!-- OCR Modal -->
+    <div id="modal-ocr" class="tool-modal">
+        <div class="tool-modal-content">
+            <span class="close-tool">&times;</span>
+            <div class="tool-modal-header">
+                <i class="fas fa-font" style="color: #00b894;"></i>
+                <h2>Image to Text (OCR)</h2>
+                <p style="color: #b0b0b0; font-size: 0.9rem;">Extract teks dari gambar</p>
+            </div>
+            <div class="input-container">
+                <input type="file" id="ocrFile" accept="image/*" style="width: 100%; padding: 0.8rem; background: var(--darker); border: 1px solid var(--light-gray); border-radius: 8px; color: var(--light); margin-bottom: 0.8rem;">
+                
+                <select id="ocrLanguage" style="width: 100%; padding: 0.8rem; background: var(--darker); border: 1px solid var(--light-gray); border-radius: 8px; color: var(--light); margin-bottom: 0.8rem;">
+                    <option value="id">Indonesian</option>
+                    <option value="en">English</option>
+                    <option value="auto">Auto Detect</option>
+                </select>
+                
+                <button class="process-btn" onclick="processTool('ocr')">
+                    <i class="fas fa-search"></i> Extract Text
+                </button>
+            </div>
+            <div id="result-ocr" class="result-container"></div>
+        </div>
+    </div>
+
+    <!-- About Section -->
+    <section id="about" class="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-image">
+                    <div class="profile-frame">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                </div>
+                <div class="about-text">
+                    <h2>About <span class="gradient-text">Me</span></h2>
+                    <p class="about-subtitle">Full Stack Developer & Creator of NexTools</p>
+                    <p class="about-description">
+                        Halo! Saya Alex, developer di balik 20+ tools premium ini. Saya membuat website ini untuk membantu 
+                        kalian mendownload, mengconvert, dan memproses berbagai file dengan mudah dan gratis. 
+                        Semua tools 100% gratis dan akan terus saya update!
+                    </p>
+                    <div class="skills">
+                        <span class="skill-tag">React</span>
+                        <span class="skill-tag">Node.js</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">JavaScript</span>
+                        <span class="skill-tag">UI/UX</span>
+                        <span class="skill-tag">API</span>
+                    </div>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-github"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-linkedin"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+        <div class="container">
+            <div class="section-header">
+                <h2>Hubungi <span class="gradient-text">Saya</span></h2>
+                <p>Ada pertanyaan atau saran? Kirim pesan ya!</p>
+            </div>
+            <div class="contact-container">
+                <div class="contact-info">
+                    <div class="info-item">
+                        <i class="fas fa-envelope"></i>
+                        <h3>Email</h3>
+                        <p>alex@nextools.com</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-phone"></i>
+                        <h3>WhatsApp</h3>
+                        <p>+62 812-3456-7890</p>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-location-dot"></i>
+                        <h3>Location</h3>
+                        <p>Jakarta, Indonesia</p>
+                    </div>
+                </div>
+                <form class="contact-form" id="contactForm">
+                    <input type="text" placeholder="Nama kamu" required>
+                    <input type="email" placeholder="Email kamu" required>
+                    <textarea placeholder="Pesan kamu..." rows="5" required></textarea>
+                    <button type="submit" class="submit-btn">Kirim Pesan <i class="fas fa-paper-plane"></i></button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <i class="fas fa-cube"></i>
+                        <span>NexTools</span>
+                    </div>
+                    <p>20+ Premium Tools untuk memudahkan aktivitas digital kamu. 100% gratis!</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#tools">Tools</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Popular Tools</h4>
+                    <ul>
+                        <li><a href="#" onclick="openToolModal('tiktok')">TikTok Downloader</a></li>
+                        <li><a href="#" onclick="openToolModal('youtube')">YouTube Downloader</a></li>
+                        <li><a href="#" onclick="openToolModal('instagram')">IG Downloader</a></li>
+                        <li><a href="#" onclick="openToolModal('pdf')">PDF Tools</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Newsletter</h4>
+                    <p>Dapatkan update tools terbaru</p>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Email kamu">
+                        <button type="submit"><i class="fas fa-arrow-right"></i></button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 NexTools. All rights reserved. Dibuat dengan <i class="fas fa-heart" style="color: #ff6b6b;"></i> di Indonesia</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script>
+        // ========== JAVASCRIPT LENGKAP UNTUK SEMUA TOOLS ==========
+        
+        // Variables
+        let currentFormat = 'mp4';
+        
+        // Open tool modal
+        function openToolModal(tool) {
+            closeAllModals();
+            const modal = document.getElementById(`modal-${tool}`);
+            if (modal) {
+                modal.style.display = 'block';
+            } else {
+                // Fallback untuk tools yang belum ada modal spesifik
+                alert(`Tool ${tool} akan segera hadir! Demo: Silakan coba TikTok atau YouTube downloader.`);
+            }
+        }
+        
+        // Close all modals
+        function closeAllModals() {
+            const modals = document.querySelectorAll('.tool-modal');
+            modals.forEach(modal => {
+                modal.style.display = 'none';
+            });
+        }
+        
+        // Format selection
+        function selectFormat(element, format) {
+            currentFormat = format;
+            document.querySelectorAll('.format-option').forEach(opt => opt.classList.remove('active'));
+            element.classList.add('active');
+        }
+        
+        // Set example URL
+        function setExampleUrl(tool, url) {
+            document.getElementById(`${tool}Url`).value = url;
+        }
+        
+        // Update password length
+        function updatePasswordLength(val) {
+            document.getElementById('passwordLength').textContent = val;
+        }
+        
+        // Process tool function
+        function processTool(tool) {
+            switch(tool) {
+                case 'tiktok':
+                    processTikTok();
+                    break;
+                case 'youtube':
+                    processYouTube();
+                    break;
+                case 'instagram':
+                    processInstagram();
+                    break;
+                case 'pdf':
+                    processPDF();
+                    break;
+                case 'image':
+                    processImage();
+                    break;
+                case 'qr':
+                    processQR();
+                    break;
+                case 'password':
+                    processPassword();
+                    break;
+                case 'converter':
+                    processConverter();
+                    break;
+                case 'tts':
+                    processTTS();
+                    break;
+                case 'ocr':
+                    processOCR();
+                    break;
+                default:
+                    showResult(tool, 'Fitur dalam pengembangan!');
+            }
+        }
+        
+        // TikTok Processor
+        function processTikTok() {
+            const url = document.getElementById('tiktokUrl').value;
+            const resultDiv = document.getElementById('result-tiktok');
+            const progressBar = document.getElementById('progress-tiktok');
+            
+            if (!url) {
+                resultDiv.innerHTML = '<p style="color: #ff6b6b;"><i class="fas fa-exclamation-circle"></i> Masukkan URL TikTok</p>';
+                return;
+            }
+            
+            if (!url.includes('tiktok.com')) {
+                resultDiv.innerHTML = '<p style="color: #ff6b6b;"><i class="fas fa-exclamation-circle"></i> URL tidak valid</p>';
+                return;
+            }
+            
+            // Show progress
+            progressBar.style.display = 'block';
+            resultDiv.innerHTML = '<p style="text-align: center;"><i class="fas fa-spinner fa-spin"></i> Memproses video...</p>';
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                document.querySelector('#progress-tiktok .progress-fill').style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    
+                    // Show result
+                    resultDiv.innerHTML = `
+                        <div style="text-align: center;">
+                            <i class="fas fa-check-circle" style="color: #6c5ce7; font-size: 2rem; margin-bottom: 1rem;"></i>
+                            <h4>Video Siap Download!</h4>
+                            <p style="color: #b0b0b0; margin-bottom: 0.5rem;">${url}</p>
+                            <div style="background: var(--darker); padding: 0.8rem; border-radius: 8px; margin: 1rem 0;">
+                                <p><strong>Judul:</strong> TikTok Video ${Math.floor(Math.random() * 1000)}</p>
+                                <p><strong>Durasi:</strong> ${Math.floor(Math.random() * 60 + 15)} detik</p>
+                                <p><strong>Ukuran:</strong> ${(Math.random() * 10 + 3).toFixed(1)} MB</p>
+                                <p><strong>Kualitas:</strong> HD (No Watermark)</p>
+                            </div>
+                            <button onclick="simulateDownload()" style="padding: 0.8rem 1.5rem; background: var(--gradient); border: none; border-radius: 8px; color: white; font-weight: 600; cursor: pointer;">
+                                <i class="fas fa-download"></i> Download Video
+                            </button>
+                            <p style="color: #666; font-size: 0.7rem; margin-top: 0.5rem;">Demo - File tidak benar-benar diunduh</p>
+                        </div>
+                    `;
+                }
+            }, 200);
+        }
+        
+        // YouTube Processor
+        function processYouTube() {
+            const url = document.getElementById('youtubeUrl').value;
+            const quality = document.getElementById('youtubeQuality').value;
+            const resultDiv = document.getElementById('result-youtube');
+            const progressBar = document.getElementById('progress-youtube');
+            
+            if (!url) {
+                resultDiv.innerHTML = '<p style="color: #ff6b6b;"><i class="fas fa-exclamation-circle"></i> Masukkan URL YouTube</p>';
+                return;
+            }
+            
+            if (!url.includes('youtube.com') && !url.includes('youtu.be')) {
+                resultDiv.innerHTML = '<p style="color: #ff6b6b;"><i class="fas fa-exclamation-circle"></i> URL tidak valid</p>';
+                return;
+            }
+            
+            progressBar.style.display = 'block';
+            resultDiv.innerHTML = '<p style="text-align: center;"><i class="fas fa-spinner fa-spin"></i> Memproses...</p>';
+            
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += 10;
+                document.querySelector('#progress-youtube .progress-fill').style.width = progress + '%';
+                
+                if (progress >= 100) {
+                    clearInterval(interval);
+                    
+                    const size = currentFormat === 'mp4' ? 
+                        (quality === '1080p' ? '45 MB' : quality === '720p' ? '25 MB' : '15 MB') : 
+                        '8 MB';
+                    
+                    resultDiv.innerHTML = `
+                        <div style="text-align: center;">
+                            <i class="fas fa-check-circle" style="color: #6c5ce7; font-size: 2rem; margin-bottom: 1rem;"></i>
+                            <h4>${currentFormat.toUpperCase()} Siap!</h4>
+                            <div style="background: var(--darker); padding: 0.8rem; border-radius: 8px; margin: 1rem 0;">
+                                <p><strong>Judul:</strong> YouTube Video</p>
+                                <p><strong>Format:</strong> ${currentFormat.toUpperCase()}</p>
+                                <p><strong>Kualitas:</strong> ${quality}</p>
+                                <p><strong>Ukuran:</strong> ${size}</p>
+                            </div>
+                            <button onclick="simulateDownload()" style="padding: 0.8rem 1.5rem; background: #ff0000; border: none; border-radius: 8px; color: white; font-weight: 600; cursor: pointer;">
+                                <i class="fas fa-download"></i> Download ${currentFormat.toUpperCase()}
+                            </button>
+                        </div>
+                    `;
+                }
+            }, 300);
+        }
+        
+        // Instagram Processor
+        function processInstagram() {
+            const url = document.getElementById('instagramUrl').value;
+            const type = document.getElementById('instagramType').value;
+            const resultDiv = document.getElementById('result-instagram');
+            
+            if (!url) {
+                resultDiv.innerHTML = '<p style="color: #ff6b6b;">Masukkan URL Instagram</p>';
+                return;
+            }
+            
+            resultDiv.innerHTML = `
+                <div style="text-align: center;">
+                    <i class="fas fa-check-circle" style="color: #e4405f; font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                    <p>✅ ${type === 'post' ? 'Post' : type === 'reels' ? 'Reels' : 'Stories'} ditemukan!</p>
+                    <button onclick="simulateDownload()" style="padding: 0.5rem 1rem; background: #e4405f; border: none; border-radius: 5px; color: white; cursor: pointer;">Download</button>
+                </div>
+            `;
+        }
+        
+        // PDF Processor
+        function processPDF() {
+            const tool = document.getElementById('pdfTool').value;
+            const file = document.getElementById('pdfFile').files[0];
+            const resultDiv = document.getElementById('result-pdf');
+            
+            if (!file) {
+                resultDiv.innerHTML = '<p style="color: #ff6b6b;">Pilih file PDF</p>';
+                return;
+            }
+            
+            resultDiv.innerHTML = `
+                <div style="text-align: center;">
+                    <i class="fas fa-check-circle" style="color: #f40f02; font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                    <p>✅ File siap diproses!</p>
+                    <p>Nama: ${file.name}</p>
+                    <p>Ukuran: ${(file.size / 1024 / 1024).toFixed(2)} MB</p>
+                    <button onclick="simulateDownload()" style="padding: 0.5rem 1rem; background: #f40f02; border: none; border-radius: 5px; color: white; cursor: pointer;">Proses ${tool}</button>
+                </div>
+            `;
+        }
+        
+        // Image Processor
+        function processImage() {
+            const tool = document.getElementById('imageTool').value;
+            const file = document.getElementById('imageFile').files[0];
+            const resultDiv = document.getElementById('result-image');
+            
+            if (!file) {
+                resultDiv.innerHTML = '<p style="color: #ff6b6b;">Pilih file gambar</p>';
+                return;
+            }
+            
+            resultDiv.innerHTML = `
+                <div style="text-align: center;">
+                    <i class="fas fa-check-circle" style="color: #00b894; font-size: 2rem; margin-bottom: 0.5rem;"></i>
+                    <p>✅ Gambar siap diproses!</p>
+                    <button onclick="simulateDownload()" style="padding: 0.5rem 1rem; background: #00b894; border: none; border-radius: 5px; color: white; cursor: pointer;">Proses ${tool}</button>
+                </div>
+            `;
+        }
+        
+        // QR Generator
+        function processQR() {
+            const text = document.getElementById('qrText').value;
+            const color1 = document.getElementById('qrColor1').value;
+            const color2 = document.getElementById('qrColor2').value;
+            const resultDiv = document.getElementById('result-qr');
+            
+            if (!text) {
+                resultDiv.innerHTML = '<p style="color: #ff6b6b;">Masukkan teks atau URL</p>';
+                return;
+            }
+            
+            // Simulasi QR code
+            resultDiv.innerHTML = `
+                <div style="text-align: center;">
+                    <div style="background: white; padding: 1rem; display: inline-block; border-radius: 10px; margin-bottom: 1rem;">
+                        <div style="display: grid; grid-template-columns: repeat(3, 30px); gap: 5px; justify-content: center;">
+                            <div style="width: 30px; height: 30px; background: ${color1};"></div>
+                            <div style="width: 30px; height: 30px; background: ${color2};"></div>
+                            <div style="width: 30px; height: 30px; background: ${color1};"></div>
+                            <div style="width: 30px; height: 30px; background: ${color2};"></div>
+                            <div style="width: 30px; height: 30px; background: ${color1};"></div>
+                            <div style="width: 30px; height: 30px; background: ${color2};"></div>
+                            <div style="width: 30px; height: 30px; background: ${color1};"></div>
+                            <div style="width: 30px; height: 30px; background: ${color2};"></div>
+                            <div style="width: 30px; height: 30px; background: ${color1};"></div>
+                        </div>
+                    </div>
+                    <p><strong>${text.substring(0, 30)}${text.length > 30 ? '...' : ''}</strong></p>
+                    <button onclick="simulateDownload()" style="padding: 0.5rem 1rem; background: var(--gradient); border: none; border-radius: 5px; color: white; cursor: pointer;">Download QR</button>
+                </div>
+            `;
+        }
+        
+        // Password Generator
+        function processPassword() {
+            const length = document.getElementById('passwordRange').value;
+            const useUpper = document.getElementById('includeUppercase').checked;
+            const useLower = document.getElementById('includeLowercase').checked;
+            const useNumbers = document.getElementById('includeNumbers').checked;
+            const useSymbols = document.getElementById('includeSymbols').checked;
+            
+            const upper = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+            const lower = 'abcdefghijklmnopqrstuvwxyz';
+            const numbers = '0123456789';
+            const symbols = '!@#$%^&*()_+-=[]{}|;:,.<>?';
+            
+            let chars = '';
+            if (useUpper) chars += upper;
+            if (useLower) chars += lower;
+            if (useNumbers) chars += numbers;
+            if (useSymbols) chars += symbols;
+            
+            if (chars === '') {
+                document.getElementById('result-password').innerHTML = '<p style="color: #ff6b6b;">Pilih minimal 1 opsi</p>';
+                return;
+            }
+            
+            let password = '';
+            for (let i = 0; i < length; i++) {
+                password += chars[Math.floor(Math.random() * chars.length)];
+            }
+            
+            document.getElementById('result-password').innerHTML = `
+                <div style="text-align: center;">
+                    <div style="background: var(--darker); padding: 1rem; border-radius: 8px; margin-bottom: 1rem; font-family: monospace; font-size: 1.2rem;">
+                        ${password}
+                    </div>
+                    <div style="display: flex; gap: 0.5rem; justify-content: center;">
+                        <button onclick="copyToClipboard('${password}')" style="padding: 0.5rem 1rem; background: var(--primary); border: none; border-radius: 5px; color: white; cursor: pointer;">
+                            <i class="fas fa-copy"></i> Copy
+                        </button>
+                        <button onclick="processTool('password')" style="padding: 0.5rem 1rem; background: var(--gradient); border: none; border-radius: 5px; color: white; cursor: pointer;">
+                            <i class="fas fa-sync"></i> Generate Lagi
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Unit Converter
+        function processConverter() {
+            const type = document.getElementById('converterType').value;
+            const value = parseFloat(document.getElementById('converterValue').value);
+            const from = document.getElementById('converterFrom').value;
+            const to = document.getElementById('converterTo').value;
+            
+            if (isNaN(value)) {
+                document.getElementById('result-converter').innerHTML = '<p style="color: #ff6b6b;">Masukkan nilai</p>';
+                return;
+            }
+            
+            // Simulasi konversi
+            const result = value * (Math.random() * 10 + 0.5);
+            
+            document.getElementById('result-converter').innerHTML = `
+                <div style="text-align: center;">
+                    <p><strong>${value} ${from} = ${result.toFixed(2)} ${to}</strong></p>
+                    <p style="color: #666; font-size: 0.8rem;">Demo konversi</p>
+                </div>
+            `;
+        }
+        
+        // Text to Speech
+        function processTTS() {
+            const text = document.getElementById('ttsText').value;
+            const lang = document.getElementById('ttsLanguage').value;
+            
+            if (!text) {
+                document.getElementById('result-tts').innerHTML = '<p style="color: #ff6b6b;">Masukkan teks</p>';
+                return;
+            }
+            
+            document.getElementById('result-tts').innerHTML = `
+                <div style="text-align: center;">
+                    <audio controls style="width: 100%; margin-bottom: 1rem;">
+                        <source src="#" type="audio/mpeg">
+                    </audio>
+                    <p><strong>${text.substring(0, 50)}${text.length > 50 ? '...' : ''}</strong></p>
+                    <button onclick="simulateDownload()" style="padding: 0.5rem 1rem; background: var(--gradient); border: none; border-radius: 5px; color: white; cursor: pointer;">Download MP3</button>
+                    <p style="color: #666; font-size: 0.7rem;">Demo - Audio simulasi</p>
+                </div>
+            `;
+        }
+        
+        // OCR Processor
+        function processOCR() {
+            const file = document.getElementById('ocrFile').files[0];
+            
+            if (!file) {
+                document.getElementById('result-ocr').innerHTML = '<p style="color: #ff6b6b;">Pilih gambar</p>';
+                return;
+            }
+            
+            document.getElementById('result-ocr').innerHTML = `
+                <div style="text-align: center;">
+                    <i class="fas fa-check-circle" style="color: #00b894; font-size: 2rem; margin-bottom: 1rem;"></i>
+                    <p>✅ Teks berhasil diekstrak:</p>
+                    <div style="background: var(--darker); padding: 1rem; border-radius: 8px; margin: 1rem 0; text-align: left;">
+                        "Ini adalah contoh hasil OCR dari gambar yang diupload. Dalam demo ini, kami menampilkan teks simulasi."
+                    </div>
+                    <button onclick="copyToClipboard('Ini adalah contoh hasil OCR')" style="padding: 0.5rem 1rem; background: var(--primary); border: none; border-radius: 5px; color: white; cursor: pointer;">
+                        <i class="fas fa-copy"></i> Copy Teks
+                    </button>
+                </div>
+            `;
+        }
+        
+        // Simulate download
+        function simulateDownload() {
+            const btn = event.target;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Downloading...';
+            btn.disabled = true;
+            
+            setTimeout(() => {
+                alert('✅ Demo: Download berhasil! (Ini adalah simulasi - file tidak benar-benar diunduh)');
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+            }, 2000);
+        }
+        
+        // Copy to clipboard
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Teks berhasil dicopy!');
+            });
+        }
+        
+        // Update converter units
+        document.getElementById('converterType').addEventListener('change', function() {
+            const type = this.value;
+            const fromSelect = document.getElementById('converterFrom');
+            const toSelect = document.getElementById('converterTo');
+            
+            let options = [];
+            
+            if (type === 'length') {
+                options = ['meter', 'cm', 'km', 'inch', 'feet'];
+            } else if (type === 'weight') {
+                options = ['kg', 'gram', 'mg', 'pound', 'ons'];
+            } else if (type === 'temperature') {
+                options = ['Celsius', 'Fahrenheit', 'Kelvin'];
+            } else if (type === 'currency') {
+                options = ['IDR', 'USD', 'EUR', 'JPY', 'SGD'];
+            }
+            
+            fromSelect.innerHTML = options.map(opt => `<option value="${opt}">${opt}</option>`).join('');
+            toSelect.innerHTML = options.map(opt => `<option value="${opt}">${opt}</option>`).join('');
+        });
+        
+        // Trigger initial load
+        document.getElementById('converterType').dispatchEvent(new Event('change'));
+        
+        // Close modal when clicking outside
+        window.addEventListener('click', function(event) {
+            if (event.target.classList.contains('tool-modal')) {
+                event.target.style.display = 'none';
+            }
+        });
+        
+        // Close button for all modals
+        document.querySelectorAll('.close-tool').forEach(btn => {
+            btn.addEventListener('click', function() {
+                this.closest('.tool-modal').style.display = 'none';
+            });
+        });
+        
+        // Category filter
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                const filter = this.dataset.filter;
+                const cards = document.querySelectorAll('.tool-card');
+                
+                cards.forEach(card => {
+                    if (filter === 'all' || card.dataset.category === filter) {
+                        card.style.display = 'block';
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        // Mobile menu
+        const hamburger = document.querySelector('.hamburger');
+        const navMenu = document.querySelector('.nav-menu');
+        
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('active');
+            navMenu.classList.toggle('active');
+        });
+        
+        // Login modal
+        document.getElementById('loginBtn').addEventListener('click', (e) => {
+            e.preventDefault();
+            document.getElementById('loginModal').style.display = 'block';
+        });
+        
+        document.querySelector('.close').addEventListener('click', () => {
+            document.getElementById('loginModal').style.display = 'none';
+        });
+        
+        document.getElementById('loginForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            if (username === 'admin' && password === 'admin') {
+                alert('Login berhasil! Selamat datang Admin.');
+                document.getElementById('loginModal').style.display = 'none';
+            } else {
+                alert('Username/password salah! Gunakan admin/admin');
+            }
+        });
+        
+        // Contact form
+        document.getElementById('contactForm').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Pesan berhasil dikirim! (Demo)');
+            e.target.reset();
+        });
+        
+        // Newsletter
+        document.querySelector('.newsletter-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            alert('Terima kasih sudah berlangganan!');
+            e.target.reset();
+        });
+        
+        // Smooth scroll
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        });
+        
+        // Counter animation
+        const counters = document.querySelectorAll('.stat-number');
+        counters.forEach(counter => {
+            const updateCount = () => {
+                const target = parseInt(counter.getAttribute('data-target'));
+                const count = parseInt(counter.innerText);
+                const increment = Math.ceil(target / 50);
+                
+                if (count < target) {
+                    counter.innerText = count + increment;
+                    setTimeout(updateCount, 30);
+                } else {
+                    counter.innerText = target;
+                }
+            };
+            updateCount();
+        });
+    </script>
+</body>
+  </html>
